@@ -1,0 +1,12 @@
+<h1>投稿詳細</h1>
+
+<p><strong>タイトル:</strong> <%= @post.title %></p>
+<p><strong>内容:</strong> <%= @post.content %></p>
+<p><strong>投稿者:</strong> <%= @post.user.email %></p>
+<p><strong>投稿日時:</strong> <%= @post.created_at.strftime('%Y年%m月%d日 %H:%M') %></p>
+
+<div class="d-flex gap-1">  <%#d-flex:フレックスボックスを有効にするBootstrapのクラス gap-1:ボタン間のスペースを調整%> 
+  <%= link_to '投稿を編集', edit_post_path(@post), class: 'btn btn-primary' %>
+  <%= button_to "削除", post_path(@post), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "btn btn-danger" %>
+  <%= link_to '投稿一覧に戻る', posts_path, class: 'btn btn-secondary' %>
+</div>

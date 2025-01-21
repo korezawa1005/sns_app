@@ -1,0 +1,16 @@
+<h1>投稿一覧</h1>
+
+<% if @posts.present? %>
+  <% @posts.each do |post| %>
+    <div id="<%= dom_id(post) %>">
+      <h2><%= link_to post.title, post_path(post) %></h2>
+      <p><%= post.content.truncate(100) %></p> 
+      <%= link_to "削除", post_path(post), data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" }, class: 'btn btn-danger' %>
+    </div>
+    <hr>
+  <% end %>
+<% else %>
+  <p>まだ投稿がありません。</p>
+<% end %>
+<%= link_to '新規投稿', new_post_path %>
+
