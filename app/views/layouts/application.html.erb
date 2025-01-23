@@ -20,7 +20,8 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
             <% if user_signed_in? %>
-              <li class="nav-item">
+              <li class="d-flex nav-item">
+                <%= link_to '新規投稿', new_post_path, class: 'nav-link' %>
                 <%= button_to "ログアウト", destroy_user_session_path, method: :delete, data: { confirm: "本当にログアウトしますか？" }, class: 'nav-link' %>
               </li>
             <% else %>
