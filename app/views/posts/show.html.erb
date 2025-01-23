@@ -5,10 +5,28 @@
 <p><strong>投稿者:</strong> <%= @post.user.email %></p>
 <p><strong>投稿日時:</strong> <%= @post.created_at.strftime('%Y年%m月%d日 %H:%M') %></p>
 
-<div class="d-flex gap-1">  <%#d-flex:フレックスボックスを有効にするBootstrapのクラス gap-1:ボタン間のスペースを調整%> 
+<div class="d-flex mb-2 p-2 gap-1">  <%#d-flex:フレックスボックスを有効にするBootstrapのクラス gap-1:ボタン間のスペースを調整%> 
   <% if @post.user == current_user %>
     <%= link_to '投稿を編集', edit_post_path(@post), class: 'btn btn-primary' %>
     <%= button_to "削除", post_path(@post), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "btn btn-danger" %>
   <% end %>
-  <%= link_to '投稿一覧に戻る', posts_path, class: 'btn btn-secondary' %>
 </div>
+
+<%= form_with(model: [@post, @post.comments.build], local: true) do |form| %>
+  <div class="mb-2 p-2 d-flex align-items-center me-2">
+    <%= form.text_area :content, class: "form-control", placeholder: "コメントを入力してください...", style: "width: 50%;" %>
+    <%= form.submit "コメントを投稿", class: "btn btn-primary" %>
+  </div>
+<% end %>
+
+<h4 class="mb-2 p-3">コメント一覧</h4>
+<% @post.comments.each do |comment| %>
+  <% if comment.user.present? %> <%# userが存在するコメントのみ表示 %>
+    <div class="d-flex align-items-center border p-3 mb-2">
+      <p class="mb-0"><strong><%= comment.user.email %></strong>: <%= comment.content %></p>
+      <% if comment.user == current_user %>
+        <%= button_to "削除", post_comment_path(@post, comment), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "g-col-6 btn btn-danger ms-3" %>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
