@@ -1,5 +1,8 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user! # ログイン必須
+  before_action :correct_user, only: [:edit, :update, :destroy] # 編集・削除アクション制限
+
   def index
     @posts = Post.order(created_at: :desc)
   end
@@ -43,6 +46,13 @@ private
 
   def post_params
     params.require(:post).permit(:title, :content)
+  end
+
+  def correct_user
+    @post = current_user.posts.find_by(id: params[:id])
+    unless @post
+      redirect_to posts_path, alert: "他のユーザーの投稿を編集・削除することはできません。"
+    end
   end
 
   def set_post
